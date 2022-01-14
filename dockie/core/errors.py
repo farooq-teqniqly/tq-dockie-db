@@ -30,3 +30,8 @@ class QueryError(DockieError):
 class IdTypeNotSupportedError(DockieError):
     def __init__(self, message):
         super().__init__(message, 1004)
+
+
+class PersistenceError(DockieError):
+    def __init__(self, message):
+        super().__init__(message, 1005)
