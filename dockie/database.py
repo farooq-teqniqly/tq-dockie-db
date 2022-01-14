@@ -6,7 +6,7 @@ from dockie import errors, ensure
 
 class Database(object):
     def __init__(self, name):
-        ensure.not_null_or_whitespace(
+        ensure.not_none_or_whitespace(
             name, errors.ObjectCreateError("Database name not specified.")
         )
         self._name = name
@@ -19,7 +19,7 @@ class Database(object):
         return list(self._containers.keys())
 
     def add_container(self, name):
-        ensure.not_null_or_whitespace(
+        ensure.not_none_or_whitespace(
             name, errors.ObjectCreateError("Container name not specified.")
         )
 
@@ -31,7 +31,7 @@ class Database(object):
         self._containers[name] = Container(name)
 
     def get_container(self, name: str):
-        ensure.not_null_or_whitespace(
+        ensure.not_none_or_whitespace(
             name, errors.ObjectReadError("Container name not specified.")
         )
 
