@@ -93,3 +93,7 @@ from dockie.core.persistence import load_from_file
 
 db = load_from_file("db.bak)
 ```
+
+## Miscellania
+### Running Tests
+From the project root folder, run `pytest` without any arguments.
