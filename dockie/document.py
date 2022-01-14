@@ -14,5 +14,11 @@ class Document(object):
             ),
         )
 
-        self.document_id = document_id
-        self.data = data
+        self._document_id = document_id
+        self._data = data
+
+    def get_document_id(self) -> str:
+        return self._document_id
+
+    def get_data(self) -> dict:
+        return self._data

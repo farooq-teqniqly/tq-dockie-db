@@ -40,3 +40,8 @@ def test_add_container_raises_error_when_container_name_not_specified():
     for invalid_name in invalid_names:
         with pytest.raises(errors.ObjectCreateError) as e:
             db.add_container(invalid_name)
+
+
+def test_container_raises_error_when_container_not_found():
+    with pytest.raises(errors.ObjectNotFoundError):
+        db.get_container("foobar")

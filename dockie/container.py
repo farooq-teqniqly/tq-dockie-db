@@ -20,4 +20,4 @@ class Container(object):
         ensure.not_null(
             document, errors.ObjectCreateError("Document cannot be of type None.")
         )
-        self._documents[document.document_id] = document
+        self._documents[document.get_document_id()] = document

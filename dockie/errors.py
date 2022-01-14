@@ -15,3 +15,8 @@ class ObjectCreateError(DockieError):
 class ObjectReadError(DockieError):
     def __init__(self, message):
         super().__init__(message, 1001)
+
+
+class ObjectNotFoundError(DockieError):
+    def __init__(self, message):
+        super().__init__(message, 1002)

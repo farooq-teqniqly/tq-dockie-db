@@ -36,4 +36,8 @@ class Database(object):
         )
 
         container = self._containers.get(name)
+
+        if container is None:
+            raise errors.ObjectNotFoundError(f"Container '{name}' was not found.")
+
         return container
