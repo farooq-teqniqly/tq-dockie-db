@@ -16,7 +16,7 @@ class DocumentQuery(ABC):
         return self.on_execute(container, **kwargs)
 
     @abstractmethod
-    def on_execute(self, container: Container, **kwargs):
+    def on_execute(self, container: Container, **kwargs):  # pragma: no cover
         pass
 
 

@@ -28,6 +28,3 @@ def id_specified(document_id, error_to_raise: errors.DockieError):
     if type(document_id) == str:
         if _is_none_or_whitespace(document_id):
             raise error_to_raise
-
-    if _is_none(document_id):
-        raise error_to_raise
