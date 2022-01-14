@@ -17,6 +17,14 @@ def test_query_error():
     _assert_error(errors.QueryError("foo"), "foo", 1003)
 
 
+def test_unsupported_id_type_error():
+    _assert_error(errors.IdTypeNotSupportedError("foo"), "foo", 1004)
+
+
+def test_persistence_error():
+    _assert_error(errors.PersistenceError("foo"), "foo", 1005)
+
+
 def _assert_error(
     error: errors.DockieError, expected_message: str, expected_error_number: int
 ):
