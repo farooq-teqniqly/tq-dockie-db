@@ -3,18 +3,9 @@ from dockie.core import errors, ensure
 
 class Document(object):
     def __init__(self, document_id, data: dict):
-        if type(document_id) == str:
-            ensure.not_none_or_whitespace(
-                document_id, errors.ObjectCreateError("Specify the document id.")
-            )
-        elif type(document_id) == int:
-            ensure.not_none(
-                document_id, errors.ObjectCreateError("Specify the document id.")
-            )
-        else:
-            raise errors.ObjectCreateError(
-                "Supported document id types are 'int' and 'str'."
-            )
+        ensure.id_specified(
+            document_id, errors.ObjectCreateError("Document id not specified.")
+        )
 
         ensure.not_none(
             data,
@@ -31,3 +22,7 @@ class Document(object):
 
     def get_data(self) -> dict:
         return self._data
+
+
+class NoneDocument(Document):
+    pass

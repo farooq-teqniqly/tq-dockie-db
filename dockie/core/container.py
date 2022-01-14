@@ -1,7 +1,7 @@
 from typing import Dict
 
 from dockie.core import errors, ensure
-from dockie.core.document import Document
+from dockie.core.document import Document, NoneDocument
 
 
 class Container(object):
@@ -21,3 +21,15 @@ class Container(object):
             document, errors.ObjectCreateError("Document cannot be of type None.")
         )
         self._documents[document.get_id()] = document
+
+    def get_document(self, document_id) -> Document:
+        ensure.id_specified(
+            document_id, errors.ObjectReadError("Document id not specified.")
+        )
+
+        document = self._documents[document_id]
+
+        if document is None:
+            return NoneDocument(document_id, {})
+
+        return document

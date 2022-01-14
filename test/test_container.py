@@ -35,3 +35,5 @@ def test_raise_error_when_container_name_not_specified():
     with pytest.raises(errors.ObjectCreateError):
         Container("")
         Container(None)
+
+def test_get_document
