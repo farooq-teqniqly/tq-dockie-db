@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
+from typing import Union
+
 from dockie.core.container import Container
 import dockie.core.ensure as ensure
 import dockie.core.errors as errors
-from dockie.core.document import Document
+from dockie.core.document import Document, NoneDocument
 
 
 class DocumentQuery(ABC):
@@ -18,12 +20,13 @@ class DocumentQuery(ABC):
 
 
 class DocumentIdQuery(DocumentQuery):
-    def on_execute(self, container: Container, **kwargs) -> Document:
+    def on_execute(
+        self, container: Container, **kwargs
+    ) -> Union[Document, NoneDocument]:
         document_id = kwargs.get("document_id")
 
         ensure.id_specified(
             document_id, errors.QueryError("Document id not specified.")
         )
 
-        document = container.get_document(document_id)
-        return document
+        return container.get_document(document_id)

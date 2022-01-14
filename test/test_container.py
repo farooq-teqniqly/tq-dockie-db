@@ -2,7 +2,7 @@ from typing import Optional
 
 import pytest
 
-from dockie.core.document import Document
+from dockie.core.document import Document, NoneDocument
 from dockie.core.container import Container
 import dockie.core.errors as errors
 
@@ -36,4 +36,7 @@ def test_raise_error_when_container_name_not_specified():
         Container("")
         Container(None)
 
-def test_get_document
+
+def test_get_document_when_not_found_returns_none_document():
+    document = container.get_document("foo")
+    assert type(document) is NoneDocument

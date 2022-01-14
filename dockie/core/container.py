@@ -27,7 +27,7 @@ class Container(object):
             document_id, errors.ObjectReadError("Document id not specified.")
         )
 
-        document = self._documents[document_id]
+        document = self._documents.get(document_id)
 
         if document is None:
             return NoneDocument(document_id, {})
