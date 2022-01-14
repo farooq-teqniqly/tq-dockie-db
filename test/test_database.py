@@ -3,6 +3,7 @@ from typing import Optional
 import pytest
 
 from dockie.database import Database
+import dockie.errors as errors
 
 db: Optional[Database] = None
 
@@ -21,7 +22,7 @@ def test_new_database_has_no_containers():
 
 
 def test_raise_error_when_database_name_not_specified():
-    with pytest.raises(ValueError):
+    with pytest.raises(errors.ObjectCreateError) as e:
         Database("")
         Database(None)
 
@@ -29,11 +30,13 @@ def test_raise_error_when_database_name_not_specified():
 def test_add_container_raises_error_when_container_exists():
     db.add_container("shop")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(errors.ObjectCreateError) as e:
         db.add_container("shop")
 
 
 def test_add_container_raises_error_when_container_name_not_specified():
-    with pytest.raises(ValueError):
-        db.add_container("")
-        db.add_container(None)
+    invalid_names = ["", None]
+
+    for invalid_name in invalid_names:
+        with pytest.raises(errors.ObjectCreateError) as e:
+            db.add_container(invalid_name)
