@@ -1,4 +1,4 @@
-import dockie.errors as errors
+import dockie.core.errors as errors
 
 
 def not_none_or_whitespace(s: str, error_to_raise: errors.DockieError):

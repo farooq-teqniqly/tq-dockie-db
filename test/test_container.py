@@ -2,9 +2,9 @@ from typing import Optional
 
 import pytest
 
-from dockie.document import Document
-from dockie.container import Container
-import dockie.errors as errors
+from dockie.core.document import Document
+from dockie.core.container import Container
+import dockie.core.errors as errors
 
 container: Optional[Container] = None
 

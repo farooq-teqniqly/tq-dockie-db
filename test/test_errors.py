@@ -1,4 +1,4 @@
-import dockie.errors as errors
+import dockie.core.errors as errors
 
 
 def test_object_create_error():

@@ -2,8 +2,8 @@ from typing import Optional
 
 import pytest
 
-from dockie.database import Database
-import dockie.errors as errors
+from dockie.core.database import Database
+import dockie.core.errors as errors
 
 db: Optional[Database] = None
 

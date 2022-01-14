@@ -1,7 +1,7 @@
 from typing import Dict, List
 
-from dockie.container import Container
-from dockie import errors, ensure
+from dockie.core.container import Container
+from dockie.core import errors, ensure
 
 
 class Database(object):

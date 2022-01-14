@@ -1,7 +1,7 @@
 import pytest
 
-from dockie.document import Document
-import dockie.errors as errors
+from dockie.core.document import Document
+import dockie.core.errors as errors
 
 
 def test_raise_error_when_document_id_not_specified():

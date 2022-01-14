@@ -1,4 +1,4 @@
-from dockie import ensure, errors
+from dockie.core import errors, ensure
 
 
 class Document(object):

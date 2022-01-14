@@ -1,7 +1,7 @@
 from typing import Dict
 
-from dockie import ensure, errors
-from dockie.document import Document
+from dockie.core import errors, ensure
+from dockie.core.document import Document
 
 
 class Container(object):
