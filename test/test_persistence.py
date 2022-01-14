@@ -6,7 +6,7 @@ from dockie.core.persistence import persist_to_file, load_from_file
 
 
 def test_persist_database():
-    db = Database("db")
+    db = Database()
     db.add_container("orders")
 
     orders_container = db.get_container("orders")
@@ -22,7 +22,6 @@ def test_persist_database():
         assert os.path.exists(filename)
 
         db_from_file = load_from_file(filename)
-        assert db_from_file.get_name() == "db"
 
         assert (
             db_from_file.get_container("orders")
