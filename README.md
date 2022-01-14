@@ -4,7 +4,7 @@ A simple in-memory document database.
 ## Installation
 
 ### Build the Wheel
-Fork or clone this repository and run python setup.py bdist_wheel in the repository root.
+Fork or clone this repository and run `python setup.py bdist_wheel` in the repository root.
 
 ### Install the Wheel
 In your consuming project, run `pip install <path to wheel file>`.

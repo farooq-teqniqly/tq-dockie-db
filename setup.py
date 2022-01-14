@@ -31,8 +31,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Topic :: Software Development :: Libraries :: Python Modules",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Utilities",
+        "Topic :: Database :: Database Engines/Servers",
     ],
     project_urls={"GitHub": PROJECT_URL},
 )
