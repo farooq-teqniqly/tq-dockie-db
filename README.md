@@ -3,11 +3,7 @@ A simple in-memory document database.
 
 ## Installation
 
-### Build the Wheel
-Fork or clone this repository and run `python setup.py bdist_wheel` in the repository root.
-
-### Install the Wheel
-In your consuming project, run `pip install <path to wheel file>`.
+Install using `pip install tq-dockie-db`.
 
 ## Document Database Primer
 Looking at the tests in the `test` folder will give you a good idea on how to use DockieDb. Nevertheless,

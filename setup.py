@@ -1,8 +1,6 @@
 import dockie
 from setuptools import setup, find_packages
 
-install_requires = ["setuptools", "dictquery"]
-
 
 def long_description():
     with open("README.md", encoding="utf-8") as f:
@@ -23,9 +21,9 @@ setup(
     license=dockie.__license__,
     packages=find_packages(include=["dockie", "dockie.*"]),
     python_requires=">=3.8",
-    install_requires=install_requires,
+    install_requires=["setuptools", "dictquery"],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3 :: Only",
         "Intended Audience :: Developers",
