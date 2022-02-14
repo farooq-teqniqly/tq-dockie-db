@@ -1,10 +1,18 @@
-import dockie
+"""
+Setup module.
+"""
+
 from setuptools import setup, find_packages
+import dockie
 
 
 def long_description():
-    with open("README.md", encoding="utf-8") as f:
-        return f.read()
+    """
+    Returns the text of the readme.
+    :return: The text of the readme.
+    """
+    with open("README.md", encoding="utf-8") as file:
+        return file.read()
 
 
 PROJECT_URL = "https://github.com/farooq-teqniqly/tq-dockie-db"
