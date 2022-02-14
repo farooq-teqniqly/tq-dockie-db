@@ -28,8 +28,8 @@ setup(
     author_email="farooq@teqniqly.com",
     license=dockie.__license__,
     packages=find_packages(include=["dockie", "dockie.*"]),
-    python_requires=">=3.8",
-    install_requires=["setuptools", "dictquery"],
+    python_requires=">=3.9",
+    install_requires=["dictquery"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python",
