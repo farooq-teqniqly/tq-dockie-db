@@ -1,15 +1,28 @@
+"""
+Query module.
+"""
 from abc import ABC, abstractmethod
 from typing import Union, List
-
-from dockie.core.container import Container
-import dockie.core.ensure as ensure
-import dockie.core.errors as errors
 import dictquery as dq
+from dockie.core.container import Container
+from dockie.core import ensure
+from dockie.core import errors
 from dockie.core.document import Document, NoneDocument
 
 
 class DocumentQuery(ABC):
+    """
+    Represents a document query. This class is the base class for
+    all document query types.
+    """
+
     def execute(self, container: Container, **kwargs):
+        """
+        Executes the document query.
+        :param container: The container to query.
+        :param kwargs: Additional keyword arguments to the query.
+        :return: The query result.
+        """
         ensure.not_none(
             container, errors.ObjectCreateError("Container name not specified.")
         )
@@ -17,12 +30,20 @@ class DocumentQuery(ABC):
 
     @abstractmethod
     def on_execute(self, container: Container, **kwargs):  # pragma: no cover
-        pass
+        """
+        Called by derived classes. This method contains type specific query logic.
+        :param container: The container to query.
+        :param kwargs: Additional keyword arguments to the query.
+        """
 
 
 class DocumentIdQuery(DocumentQuery):
+    """
+    Represents a document id query.
+    """
+
     def on_execute(
-        self, container: Container, **kwargs
+            self, container: Container, **kwargs
     ) -> Union[Document, NoneDocument]:
         document_id = kwargs.get("document_id")
 
@@ -33,10 +54,11 @@ class DocumentIdQuery(DocumentQuery):
         return container.get_document(document_id)
 
 
-# https://pypi.org/project/dictquery/
-
-
 class DocumentAttributeQuery(DocumentQuery):
+    """
+    Represents a document attribute query,
+    """
+
     def on_execute(self, container: Container, **kwargs) -> List[Document]:
         documents = []
         query = kwargs.get("query")

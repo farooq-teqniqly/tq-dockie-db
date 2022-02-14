@@ -1,12 +1,18 @@
-import dockie
-from setuptools import setup, find_packages
+"""
+Setup module.
+"""
 
-install_requires = ["setuptools", "dictquery"]
+from setuptools import setup, find_packages
+import dockie
 
 
 def long_description():
-    with open("README.md", encoding="utf-8") as f:
-        return f.read()
+    """
+    Returns the text of the readme.
+    :return: The text of the readme.
+    """
+    with open("README.md", encoding="utf-8") as file:
+        return file.read()
 
 
 PROJECT_URL = "https://github.com/farooq-teqniqly/tq-dockie-db"
@@ -22,10 +28,10 @@ setup(
     author_email="farooq@teqniqly.com",
     license=dockie.__license__,
     packages=find_packages(include=["dockie", "dockie.*"]),
-    python_requires=">=3.8",
-    install_requires=install_requires,
+    python_requires=">=3.9",
+    install_requires=["dictquery"],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3 :: Only",
         "Intended Audience :: Developers",
