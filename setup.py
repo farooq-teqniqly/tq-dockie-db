@@ -29,7 +29,7 @@ setup(
     license=dockie.__license__,
     packages=find_packages(include=["dockie", "dockie.*"]),
     python_requires=">=3.9",
-    install_requires=["dictquery"],
+    install_requires=[],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python",
