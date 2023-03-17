@@ -8,7 +8,8 @@ within a specified database directory.
 
 import json
 import os
-import database_defaults as defaults
+import dockie.core.database_defaults as defaults
+
 
 class Database:
     """A document database class for managing and persisting JSON documents.
