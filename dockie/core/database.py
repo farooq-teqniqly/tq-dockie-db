@@ -1,4 +1,4 @@
-"""The Dockie database module.
+"""The DockieDb database module.
 
 This module provides a simple document database implementation for managing JSON
 documents using a file-based storage system. It supports basic CRUD operations

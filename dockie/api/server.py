@@ -35,8 +35,9 @@ Example:
     To delete an existing document with id '123' from 'my_database':
         DELETE /my_database/delete/123
 """
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify
 from dockie.core.database import Database
+from dockie.api.error_handling import respond_with_error
 
 app = Flask(__name__)
 databases = {}
@@ -63,10 +64,10 @@ def init_db():
     db_name = data.get('db_name')
 
     if not db_name:
-        abort(400, "Database name is required")
+        respond_with_error(400, "Database name is required")
 
     if db_name in databases:
-        abort(400, f"Database '{db_name}' already exists")
+        respond_with_error(400, f"Database '{db_name}' already exists")
 
     databases[db_name] = Database(db_root, db_name)
     return jsonify({'message': f"Database '{db_name}' initialized"}), 201
@@ -90,7 +91,7 @@ def insert_document(db_name):
            400 Bad Request: If the request does not contain a valid document.
    """
     if db_name not in databases:
-        abort(404, f"Database '{db_name}' not found")
+        respond_with_error(404, f"Database '{db_name}' not found")
 
     document = request.get_json()
     try:
@@ -118,7 +119,7 @@ def get_document(db_name, doc_id):
             404 Not Found: If the specified database or document does not exist.
     """
     if db_name not in databases:
-        abort(404, f"Database '{db_name}' not found")
+        respond_with_error(404, f"Database '{db_name}' not found")
 
     try:
         document = databases[db_name].get(doc_id)
@@ -146,7 +147,7 @@ def delete_document(db_name, doc_id):
             404 Not Found: If the specified database or document does not exist.
     """
     if db_name not in databases:
-        abort(404, f"Database '{db_name}' not found")
+        respond_with_error(404, f"Database '{db_name}' not found")
 
     try:
         databases[db_name].delete(doc_id)
@@ -173,7 +174,7 @@ def update_document(db_name, doc_id):
             400 Bad Request: If the request does not contain a valid updated document.
     """
     if db_name not in databases:
-        abort(404, f"Database '{db_name}' not found")
+        respond_with_error(404, f"Database '{db_name}' not found")
 
     updated_document = request.get_json()
     try:
