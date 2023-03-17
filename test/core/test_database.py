@@ -15,7 +15,7 @@ def test_insert(db):
     doc = {'id': '1', 'title': 'First Document', 'content': 'Hello, world!'}
     doc_id = db.insert(doc)
     assert doc_id == '1'
-    assert os.path.exists(db._get_file_path(doc_id))
+    assert os.path.exists(db.file_manager._get_file_path(doc_id))
 
 
 def test_get(db):
@@ -38,7 +38,7 @@ def test_update(db):
 def test_delete(db):
     doc = {'id': '4', 'title': 'Fourth Document', 'content': 'To be deleted'}
     db.insert(doc)
-    file_path = db._get_file_path('4')
+    file_path = db.file_manager._get_file_path('4')
     assert os.path.exists(file_path)
 
     db.delete('4')
