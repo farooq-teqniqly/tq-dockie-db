@@ -6,10 +6,7 @@ documents using a file-based storage system. It supports basic CRUD operations
 within a specified database directory.
 """
 
-import json
-import os
-import dockie.core.database_defaults as defaults
-from dockie.core.file_manager import FileManager
+from dockie.core.document_manager import DocumentManager
 
 
 class Database:
@@ -21,9 +18,8 @@ class Database:
         within a specified database directory.
 
         Attributes:
-            db_directory (str): The path to the database directory.
-            index_file (str): The path to the index file, which maps document IDs to file paths.
-            index (dict): A dictionary that maps document IDs to file paths.
+            document_manager (DocumentManager): The DocumentManager instance responsible
+            for managing document files.
     """
 
     def __init__(self, db_root, db_name):
@@ -34,7 +30,7 @@ class Database:
                     db_root (str): The path to the root directory containing all databases.
                     db_name (str): The name of the database.
         """
-        self.file_manager = FileManager(db_root, db_name)
+        self.document_manager = DocumentManager(db_root, db_name)
 
     def insert(self, document):
         """Inserts a new document into the database.
@@ -48,19 +44,8 @@ class Database:
                 Raises:
                     KeyError: If a document with the same ID already exists.
         """
-        doc_id = document['id']
 
-        if doc_id in self.file_manager.index:
-            raise KeyError(f"Document with ID '{doc_id}' already exists.")
-        file_path = self.file_manager._get_file_path(doc_id)
-
-        with open(file_path, 'w', encoding=defaults.ENCODING) as file:
-            json.dump(document, file)
-
-        self.file_manager.index[doc_id] = file_path
-        self.file_manager._save_index()
-
-        return doc_id
+        return self.document_manager.write_file(document)
 
     def get(self, doc_id):
         """Retrieves a document with the specified ID from the database.
@@ -74,15 +59,7 @@ class Database:
                 Raises:
                     KeyError: If a document with the specified ID does not exist.
         """
-        if doc_id not in self.file_manager.index:
-            raise KeyError(f"Document with ID '{doc_id}' not found.")
-
-        file_path = self.file_manager.index[doc_id]
-
-        with open(file_path, 'r', encoding=defaults.ENCODING) as file:
-            document = json.load(file)
-
-        return document
+        return self.document_manager.read_file(doc_id)
 
     def delete(self, doc_id):
         """Delete a document from the database by its ID.
@@ -93,13 +70,7 @@ class Database:
                 Raises:
                     KeyError: If the document with the given ID is not found.
         """
-        if doc_id not in self.file_manager.index:
-            raise KeyError(f"Document with ID '{doc_id}' not found.")
-
-        file_path = self.file_manager.index[doc_id]
-        os.remove(file_path)
-        del self.file_manager.index[doc_id]
-        self.file_manager._save_index()
+        self.document_manager.delete_file(doc_id)
 
     def update(self, doc_id, updated_document):
         """Update a document in the database.
@@ -112,13 +83,4 @@ class Database:
                     KeyError: If the document with the given ID is not found.
                     ValueError: If the document's ID is changed.
         """
-        if doc_id not in self.file_manager.index:
-            raise KeyError(f"Document with ID '{doc_id}' not found.")
-
-        if doc_id != updated_document['id']:
-            raise ValueError("The document's ID cannot be changed.")
-
-        file_path = self.file_manager._get_file_path(doc_id)
-
-        with open(file_path, 'w', encoding=defaults.ENCODING) as file:
-            json.dump(updated_document, file)
+        self.document_manager.update_file(doc_id, updated_document)
