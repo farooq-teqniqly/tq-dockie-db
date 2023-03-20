@@ -6,7 +6,7 @@ ordered data efficiently and perform ordered traversal.
 
 The primary difference between a B+ tree and a Binary Search Tree (BST) is in the number of children a parent can have.
 In a BST, each parent must have two children. In a B+ tree a parent can have between 2 and N children where N is the
-order of the tree. The root node is the only node that can have zero children. B+ trees are generally shallow and wide.
+degree of the tree. The root node is the only node that can have zero children. B+ trees are generally shallow and wide.
 The benefit of this is that a search requires less node traversals. Also, nodes can be read in blocks, taking
 advantage of cache lines.
 
@@ -15,7 +15,7 @@ Classes:
     BPlusTree: Represents the B+ tree data structure.
 
 Example:
-    tree = BPlusTree(order=4)
+    tree = BPlusTree(degree=4)
     tree.insert(5)
     tree.insert(10)
     tree.insert(15)
@@ -26,6 +26,7 @@ Example:
     print(tree.search(30))  # False
 
 """
+from typing import Callable, Any
 
 
 # pylint: disable=too-few-public-methods
@@ -33,21 +34,21 @@ class BPlusTreeNode:
     """A node in a B+ tree.
 
         Attributes:
-            order (int): The order of the B+ tree.
+            degree (int): The degree of the B+ tree.
             keys (list): The list of keys in the node.
             children (list): The list of children nodes.
             is_leaf (bool): True if the node is a leaf, otherwise False.
             next_leaf (BPlusTreeNode): The next leaf node in the tree.
     """
 
-    def __init__(self, order):
+    def __init__(self, degree):
         """
                 Initializes a B+ tree node.
 
                 Args:
-                    order (int): The order of the B+ tree.
+                    degree (int): The degree of the B+ tree.
         """
-        self.order = order
+        self.degree = degree
         self.keys = []
         self.children = []
         self.is_leaf = True
@@ -60,8 +61,8 @@ class BPlusTreeNode:
                 Returns:
                     tuple: A tuple containing the new node and its first key.
         """
-        mid = self.order // 2
-        new_node = BPlusTreeNode(self.order)
+        mid = self.degree // 2
+        new_node = BPlusTreeNode(self.degree)
         new_node.keys = self.keys[mid:]
         new_node.children = self.children[mid:]
         self.keys = self.keys[:mid]
@@ -79,18 +80,26 @@ class BPlusTree:
 
         Attributes:
             root (BPlusTreeNode): The root node of the tree.
-            order (int): The order of the B+ tree.
+            degree (int): The degree of the B+ tree.
+            on_split (Callable[[str, Any], None], optional): A function that takes a string and key as
+                    an argument and returns None. This function is called when a split occurs during the insertion
+                    process. Defaults to None, in which case no callback is executed.
     """
 
-    def __init__(self, order=5):
+    def __init__(self, degree=5, on_split: Callable[[str, Any], None] = None):
         """
-                Initializes a B+ tree with the given order.
+                Initializes a B+ tree with the given degree.
 
                 Args:
-                    order (int, optional): The order of the B+ tree. Defaults to 5.
+                    degree (int, optional): The degree of the B+ tree. Defaults to 5.
         """
-        self.root = BPlusTreeNode(order)
-        self.order = order
+        self.root = BPlusTreeNode(degree)
+        self.degree = degree
+
+        def noop(_, __):
+            pass
+
+        self.on_split = on_split or noop
 
     def _insert(self, node, key):
         """
@@ -110,27 +119,31 @@ class BPlusTree:
             node.keys.insert(i, key)
             node.children.insert(i, None)
 
-            if len(node.keys) >= node.order:
+            # Split if leaf node is full.
+            if len(node.keys) >= node.degree:
+                self.on_split("leaf", key)
                 return node.split()
-            else:
-                return None, None
-        else:
-            i = 0
-            while i < len(node.keys) and node.keys[i] <= key:
-                i += 1
 
-            new_node, new_key = self._insert(node.children[i], key)
+            return None, None
 
-            if new_key is not None:
-                node.keys.insert(i, new_key)
-                node.children.insert(i + 1, new_node)
+        i = 0
+        while i < len(node.keys) and node.keys[i] <= key:
+            i += 1
 
-                if len(node.keys) >= node.order:
-                    return node.split()
-                else:
-                    return None, None
-            else:
-                return None, None
+        new_node, new_key = self._insert(node.children[i], key)
+
+        if new_key is not None:
+            node.keys.insert(i, new_key)
+            node.children.insert(i + 1, new_node)
+
+            # Split if non-leaf node is full.
+            if len(node.keys) >= node.degree:
+                self.on_split("non-leaf", key)
+                return node.split()
+
+            return None, None
+
+        return None, None
 
     def insert(self, key):
         """
@@ -142,7 +155,7 @@ class BPlusTree:
         new_node, new_key = self._insert(self.root, key)
 
         if new_key is not None:
-            new_root = BPlusTreeNode(self.order)
+            new_root = BPlusTreeNode(self.degree)
             new_root.keys = [new_key]
             new_root.children = [self.root, new_node]
             new_root.is_leaf = False
